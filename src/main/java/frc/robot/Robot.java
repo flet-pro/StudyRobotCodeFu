@@ -83,15 +83,15 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     drive.arcadeDrive(-controller.getLeftY(), controller.getLeftX());
 
-    if (controller.getAButtonPressed()) {
+    if (controller.getAButton()) {
       rollerSpeed = controller.getLeftTriggerAxis();
       beltSpeed = controller.getRightTriggerAxis();
-    }else if (controller.getBButtonPressed()){
+    }else if (controller.getBButton()){
       rollerSpeed = 0.0;
       beltSpeed = 0.0;
     }
 
-    if (controller.getXButtonPressed()) {
+    if (controller.getXButton()) {
       isIntakeOpened = !isIntakeOpened;
     }
   }
