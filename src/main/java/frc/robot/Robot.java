@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -22,8 +23,8 @@ public class Robot extends TimedRobot {
   XboxController controller;
   WPI_TalonSRX driveRightFrontMotor, driveLeftFrontMotor;
   VictorSPX driveRightBackMotor, driveLeftBackMotor;
+  VictorSPX controlIntakeRoller;
   DifferentialDrive drive;
-
   @Override
   public void robotInit() {
     controller = new XboxController(0);
@@ -31,6 +32,8 @@ public class Robot extends TimedRobot {
     driveLeftFrontMotor = new WPI_TalonSRX(2);
     driveRightBackMotor = new VictorSPX(1);
     driveLeftBackMotor = new VictorSPX(3);
+
+    controlIntakeRoller = new VictorSPX(5);
 
     driveRightFrontMotor.setInverted(true);
     driveRightBackMotor.setInverted(true);
@@ -61,6 +64,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     drive.arcadeDrive(-controller.getLeftY(), controller.getLeftX());
+    if (controller.getAButton()) {
+      controlIntakeRoller.set(ControlMode.PercentOutput, -controller.getRightY()); 
+    }
   }
 
   /** This function is called once when the robot is disabled. */
