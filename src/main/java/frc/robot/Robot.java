@@ -55,11 +55,7 @@ public class Robot extends TimedRobot {
 
     drive = new DifferentialDrive(driveLeftFrontMotor, driveRightFrontMotor);
 
-    controlIntakeRoller.set(ControlMode.PercentOutput, rollerSpeed);
-    controlIntakeBelt.set(ControlMode.PercentOutput, beltSpeed);
-
     controlIntakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
-    controlIntakeSolenoid.set(isIntakeOpened);
   }
 
   @Override
@@ -83,17 +79,22 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     drive.arcadeDrive(-controller.getLeftY(), controller.getLeftX());
 
-    if (controller.getAButton()) {
-      rollerSpeed = controller.getLeftTriggerAxis();
-      beltSpeed = controller.getRightTriggerAxis();
-    }else if (controller.getBButton()){
-      rollerSpeed = 0.0;
-      beltSpeed = 0.0;
-    }
+    // if (controller.getAButton()) {
+    rollerSpeed = controller.getLeftTriggerAxis();
+    beltSpeed = controller.getRightTriggerAxis();
+    // }else if (controller.getBButton()){
+    //   rollerSpeed = 0.0;
+    //   beltSpeed = 0.0;
+    // }
 
     if (controller.getXButton()) {
       isIntakeOpened = !isIntakeOpened;
     }
+
+    controlIntakeSolenoid.set(isIntakeOpened);
+
+    controlIntakeRoller.set(ControlMode.PercentOutput, rollerSpeed);
+    controlIntakeBelt.set(ControlMode.PercentOutput, beltSpeed);
   }
 
   /** This function is called once when the robot is disabled. */
