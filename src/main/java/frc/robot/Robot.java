@@ -38,22 +38,21 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     controller = new XboxController(0);
+
     driveRightFrontMotor = new WPI_TalonSRX(0);
     driveLeftFrontMotor = new WPI_TalonSRX(2);
     driveRightBackMotor = new VictorSPX(1);
     driveLeftBackMotor = new VictorSPX(3);
 
-    controlIntakeRoller = new VictorSPX(5);
-
-    controlIntakeBelt = new WPI_TalonSRX(4);
-
     driveRightFrontMotor.setInverted(true);
     driveRightBackMotor.setInverted(true);
-
     driveRightBackMotor.follow(driveRightFrontMotor);
     driveLeftBackMotor.follow(driveLeftFrontMotor);
 
     drive = new DifferentialDrive(driveLeftFrontMotor, driveRightFrontMotor);
+
+    controlIntakeRoller = new VictorSPX(5);
+    controlIntakeBelt = new WPI_TalonSRX(4);
 
     controlIntakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
   }
@@ -65,51 +64,39 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
   }
 
-  /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
   }
 
-  /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {}
 
-  /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
     drive.arcadeDrive(-controller.getLeftY(), controller.getLeftX());
 
-    // if (controller.getAButton()) {
     rollerSpeed = controller.getLeftTriggerAxis();
     beltSpeed = controller.getRightTriggerAxis();
-    // }else if (controller.getBButton()){
-    //   rollerSpeed = 0.0;
-    //   beltSpeed = 0.0;
-    // }
+
+    controlIntakeRoller.set(ControlMode.PercentOutput, rollerSpeed);
+    controlIntakeBelt.set(ControlMode.PercentOutput, beltSpeed);
 
     if (controller.getXButtonPressed()) {
       isIntakeOpened = !isIntakeOpened;
     }
 
     controlIntakeSolenoid.set(isIntakeOpened);
-
-    controlIntakeRoller.set(ControlMode.PercentOutput, rollerSpeed);
-    controlIntakeBelt.set(ControlMode.PercentOutput, beltSpeed);
   }
 
-  /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {}
 
-  /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {}
 
-  /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {}
 
-  /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
 }
