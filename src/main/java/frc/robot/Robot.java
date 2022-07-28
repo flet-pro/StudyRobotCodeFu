@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -26,6 +28,12 @@ public class Robot extends TimedRobot {
   VictorSPX driveRightBackMotor, driveLeftBackMotor;
   VictorSPX controlIntakeRoller;
   DifferentialDrive drive;
+  Solenoid controlIntakeSolenoid;
+
+  private double beltSpeed = 0.0;
+  private double rollerSpeed = 0.0;
+  private boolean isIntakeOpened = false;
+
 
   @Override
   public void robotInit() {
@@ -46,6 +54,12 @@ public class Robot extends TimedRobot {
     driveLeftBackMotor.follow(driveLeftFrontMotor);
 
     drive = new DifferentialDrive(driveLeftFrontMotor, driveRightFrontMotor);
+
+    controlIntakeRoller.set(ControlMode.PercentOutput, rollerSpeed);
+    controlIntakeBelt.set(ControlMode.PercentOutput, beltSpeed);
+
+    controlIntakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
+    controlIntakeSolenoid.set(isIntakeOpened);
   }
 
   @Override
@@ -69,12 +83,16 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     drive.arcadeDrive(-controller.getLeftY(), controller.getLeftX());
 
-    if (controller.getAButton()) {
-      controlIntakeRoller.set(ControlMode.PercentOutput, -controller.getRightY()); 
+    if (controller.getAButtonPressed()) {
+      rollerSpeed = controller.getLeftTriggerAxis();
+      beltSpeed = controller.getRightTriggerAxis();
+    }else if (controller.getBButtonPressed()){
+      rollerSpeed = 0.0;
+      beltSpeed = 0.0;
     }
 
-    if (controller.getBButton()) {
-      controlIntakeBelt.set(ControlMode.PercentOutput, 0.5);
+    if (controller.getXButtonPressed()) {
+      isIntakeOpened = !isIntakeOpened;
     }
   }
 
