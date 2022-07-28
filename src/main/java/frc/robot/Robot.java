@@ -22,9 +22,11 @@ public class Robot extends TimedRobot {
   
   XboxController controller;
   WPI_TalonSRX driveRightFrontMotor, driveLeftFrontMotor;
+  WPI_TalonSRX controlIntakeBelt;
   VictorSPX driveRightBackMotor, driveLeftBackMotor;
   VictorSPX controlIntakeRoller;
   DifferentialDrive drive;
+
   @Override
   public void robotInit() {
     controller = new XboxController(0);
@@ -34,6 +36,8 @@ public class Robot extends TimedRobot {
     driveLeftBackMotor = new VictorSPX(3);
 
     controlIntakeRoller = new VictorSPX(5);
+
+    controlIntakeBelt = new WPI_TalonSRX(4);
 
     driveRightFrontMotor.setInverted(true);
     driveRightBackMotor.setInverted(true);
@@ -64,8 +68,13 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     drive.arcadeDrive(-controller.getLeftY(), controller.getLeftX());
+
     if (controller.getAButton()) {
       controlIntakeRoller.set(ControlMode.PercentOutput, -controller.getRightY()); 
+    }
+
+    if (controller.getBButton()) {
+      controlIntakeBelt.set(ControlMode.PercentOutput, 0.5);
     }
   }
 
