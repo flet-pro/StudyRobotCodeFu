@@ -32,6 +32,9 @@ public class Robot extends TimedRobot {
     driveRightBackMotor = new VictorSPX(1);
     driveLeftBackMotor = new VictorSPX(3);
 
+    driveRightFrontMotor.setInverted(true);
+    driveRightBackMotor.setInverted(true);
+
     driveRightBackMotor.follow(driveRightFrontMotor);
     driveLeftBackMotor.follow(driveLeftFrontMotor);
 
