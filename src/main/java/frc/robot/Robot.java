@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
     //   beltSpeed = 0.0;
     // }
 
-    if (controller.getXButton()) {
+    if (controller.getXButtonPressed()) {
       isIntakeOpened = !isIntakeOpened;
     }
 
