@@ -7,6 +7,8 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -27,12 +29,14 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX controlIntakeBelt;
   VictorSPX driveRightBackMotor, driveLeftBackMotor;
   VictorSPX controlIntakeRoller;
+  CANSparkMax controlClimbMotor;
   DifferentialDrive drive;
   Solenoid controlIntakeSolenoid;
 
   private double beltSpeed = 0.0;
   private double rollerSpeed = 0.0;
   private boolean isIntakeOpened = false;
+  private double climbMotorSpeed = 0.0;
 
 
   @Override
@@ -53,6 +57,8 @@ public class Robot extends TimedRobot {
 
     controlIntakeRoller = new VictorSPX(5);
     controlIntakeBelt = new WPI_TalonSRX(4);
+
+    controlClimbMotor = new CANSparkMax(1, MotorType.kBrushed);
 
     controlIntakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
   }
@@ -86,6 +92,14 @@ public class Robot extends TimedRobot {
     }
 
     controlIntakeSolenoid.set(isIntakeOpened);
+
+    if (controller.getAButtonPressed()) {
+      climbMotorSpeed = 1.0;
+    }else if (controller.getYButtonPressed()) {
+      climbMotorSpeed = 0.0;
+    }
+
+    controlClimbMotor.set(climbMotorSpeed);
   }
 
   @Override
