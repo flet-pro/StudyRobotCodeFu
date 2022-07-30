@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
     controlIntakeRoller = new VictorSPX(5);
     controlIntakeBelt = new WPI_TalonSRX(4);
 
-    controlClimbMotor = new CANSparkMax(1, MotorType.kBrushed);
+    controlClimbMotor = new CANSparkMax(1, MotorType.kBrushless);
 
     controlIntakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
   }
