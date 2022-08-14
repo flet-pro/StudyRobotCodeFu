@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.nio.channels.NonReadableChannelException;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -32,10 +34,13 @@ public class Robot extends TimedRobot {
   CANSparkMax controlShootingMotor;
   DifferentialDrive drive;
   Solenoid controlIntakeSolenoid;
+  Solenoid controlFirstLockSolenoid;
+  Solenoid controlSecondLockSolenoid;
 
   private double beltSpeed = 0.0;
   private double rollerSpeed = 0.0;
   private boolean isIntakeOpened = false;
+  private boolean isClimbSolenoidLocked = true;
   private double shootingMotorSpeed = 0.0;
 
 
@@ -61,6 +66,8 @@ public class Robot extends TimedRobot {
     controlShootingMotor = new CANSparkMax(6, MotorType.kBrushless);
 
     controlIntakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
+    controlFirstLockSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
+    controlSecondLockSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 1);
   }
 
   @Override
@@ -91,7 +98,13 @@ public class Robot extends TimedRobot {
       isIntakeOpened = !isIntakeOpened;
     }
 
+    if (controller.getBButtonPressed()) {
+      isClimbSolenoidLocked = !isClimbSolenoidLocked;
+    }
+
     controlIntakeSolenoid.set(isIntakeOpened);
+    controlFirstLockSolenoid.set(isClimbSolenoidLocked);
+    controlSecondLockSolenoid.set(isClimbSolenoidLocked);
 
     if (controller.getAButtonPressed()) {
       shootingMotorSpeed = 1.0;
