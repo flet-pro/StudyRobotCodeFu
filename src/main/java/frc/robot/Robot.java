@@ -29,14 +29,14 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX controlIntakeBelt;
   VictorSPX driveRightBackMotor, driveLeftBackMotor;
   VictorSPX controlIntakeRoller;
-  CANSparkMax controlClimbMotor;
+  CANSparkMax controlShootingMotor;
   DifferentialDrive drive;
   Solenoid controlIntakeSolenoid;
 
   private double beltSpeed = 0.0;
   private double rollerSpeed = 0.0;
   private boolean isIntakeOpened = false;
-  private double climbMotorSpeed = 0.0;
+  private double shootingMotorSpeed = 0.0;
 
 
   @Override
@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
     controlIntakeRoller = new VictorSPX(5);
     controlIntakeBelt = new WPI_TalonSRX(4);
 
-    controlClimbMotor = new CANSparkMax(6, MotorType.kBrushless);
+    controlShootingMotor = new CANSparkMax(6, MotorType.kBrushless);
 
     controlIntakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
   }
@@ -94,12 +94,12 @@ public class Robot extends TimedRobot {
     controlIntakeSolenoid.set(isIntakeOpened);
 
     if (controller.getAButtonPressed()) {
-      climbMotorSpeed = 1.0;
+      shootingMotorSpeed = 1.0;
     }else if (controller.getYButtonPressed()) {
-      climbMotorSpeed = 0.0;
+      shootingMotorSpeed = 0.0;
     }
 
-    controlClimbMotor.set(climbMotorSpeed);
+    controlShootingMotor.set(shootingMotorSpeed);
   }
 
   @Override
