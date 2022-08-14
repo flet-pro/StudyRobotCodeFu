@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import java.nio.channels.NonReadableChannelException;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -61,9 +60,12 @@ public class Robot extends TimedRobot {
     drive = new DifferentialDrive(driveLeftFrontMotor, driveRightFrontMotor);
 
     controlIntakeRoller = new VictorSPX(5);
+    controlIntakeRoller.setInverted(true);
+
     controlIntakeBelt = new WPI_TalonSRX(4);
 
     controlShootingMotor = new CANSparkMax(6, MotorType.kBrushless);
+    controlShootingMotor.setInverted(true);
 
     controlIntakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
     controlFirstLockSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
