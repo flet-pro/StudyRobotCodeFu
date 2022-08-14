@@ -1,18 +1,26 @@
 package frc.robot;
 
+import frc.robot.Component.*;
+
 public class Mode {
-    public void changeMode() {
+    public static Modes mode;
+
+    public static void changeMode() {
     }
 
     public enum Modes{
-        Drive,
-        Shoot,
-        Climb;
+        Drive(new Drive()),
+        Shoot(new Shoot()),
+        Climb(new Climb());
 
-        private String mode;
+        private Component Mode;
 
-        private changeMode() {
-            
+        private Modes(Component mode) {
+            this.Mode = mode;
+        }
+
+        private void changeMode() {
+            changeMode();
         }
     }
 }
