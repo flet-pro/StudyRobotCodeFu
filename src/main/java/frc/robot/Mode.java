@@ -9,6 +9,10 @@ public class Mode {
         Shoot,
         Climb;
 
-        
+        private String mode;
+
+        private changeMode() {
+            
+        }
     }
 }
