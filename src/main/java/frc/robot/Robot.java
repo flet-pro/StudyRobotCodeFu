@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+import java.util.ArrayList;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -16,6 +18,10 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.Component.Climb;
+import frc.robot.Component.Component;
+import frc.robot.Component.Drive;
+import frc.robot.Component.Shoot;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,6 +30,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  ArrayList<Component> components;
   
   XboxController controller;
   WPI_TalonSRX driveRightFrontMotor, driveLeftFrontMotor;
@@ -46,6 +54,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     controller = new XboxController(0);
+
+    components.add(new Drive());
+    components.add(new Shoot());
+    components.add(new Climb());
+
+    for(Component component : components){
+      component.addController(controller);
+    }
 
     driveRightFrontMotor = new WPI_TalonSRX(0);
     driveLeftFrontMotor = new WPI_TalonSRX(2);
@@ -129,3 +145,14 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {}
 }
+
+
+//TODO ShootModeとClimbMode時の仕組み
+
+//TODO ShootModeとClimbModeとDriveModeのセンサー
+
+//TODO Modeの切り替え
+
+//TODO AutomousとPIDの設定
+
+//TODO Command-basedの勉強

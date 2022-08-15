@@ -1,16 +1,34 @@
 package frc.robot.Component;
 
-import frc.robot.Const.Const;
-import frc.robot.State.State;
+
+import edu.wpi.first.wpilibj.XboxController;
+
 
 public abstract class Component {
-    public State state;
-    public Const constant;
+    public XboxController controller;
 
-    public Component(State state, Const constant){
-        this.state = state;
-        this.constant = constant;
+    public void addController(XboxController controller) {
+        this.controller = controller;
     }
 
+    /**
+     * Robot.javaのinitで実行
+     */
+    public abstract void initState();
+
+    /**
+     * Stateをリセット
+     */
+    public abstract void resetState();
+
+    /**
+     * Stateを変える
+     * controllerを元に
+     */
+    public abstract void changeState();
+
+    /**
+     * Stateを反映する
+     */
     public abstract void applyState();
 }

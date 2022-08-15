@@ -1,9 +1,17 @@
 package frc.robot;
 
+
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Component.*;
 
 public class Mode {
-    public static Modes mode;
+    
+    public Modes mode;
+    public XboxController controller;
+
+    public void addController(XboxController controller){
+        this.controller = controller;
+    }
 
     public static void changeMode() {
     }
